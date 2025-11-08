@@ -1,28 +1,67 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import "./assets/styles/index_mobile.css";
+import TaskAdder from "./components/TaskAdder.jsx";
+import { loadTasksFromLocalStorage } from "./components/LocalStorageUtils.js";
 
 function Index() {
+  const [tasks, setTasks] = useState([]);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+
+  useEffect(() => {
+    setTasks(loadTasksFromLocalStorage());
+  }, []);
+
+  const handleAddTask = (newTask) => {
+    const updatedTasks = [...tasks, newTask];
+    setTasks(updatedTasks);
+  };
+
+  const handleTaskClick = (event, taskId) => {
+    if (event.target.className == "task-card") {
+      setSelectedTaskId(taskId);
+    }
+  };
+
   return (
     <>
-      <div className="add-task-container">
-        <div className="add-task-inputs-container">
-          <input id="inputTaskTitle" placeholder="Title..." />
-          <input id="inputTaskAbout" placeholder="About..." />
-        </div>
+      <TaskAdder onAddTask={handleAddTask} />
 
-        <div className="add-task-button"></div>
+      <div className="tasks-container">
+        {tasks.map((task) => (
+          <div>
+            <div
+              key={task.id}
+              className="task-card"
+              onClick={() => handleTaskClick(event, task.id)}
+            >
+              <div className="text-task-card">
+                <h1>{task.taskTitle}</h1>
+                <p>{task.taskAbout}</p>
+              </div>
+              <div className="delete-button-task-card"></div>
+            </div>
+            <div
+              className={`menu-task-container ${
+                selectedTaskId === task.id ? "visible" : ""
+              }`}
+            >
+              <div className="share-task-button"></div>
+              <div className="about-task-button"></div>
+              <div className="edit-task-button"></div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div className="tasks-container"></div>
-
-      <div className="no-task-container">
-        <div className="wall-no-task"></div>
-        <div className="text-no-task-container">
-          <p>No tasks</p>
+      {tasks.length === 0 && (
+        <div className="no-task-container">
+          <div className="wall-no-task"></div>
+          <div className="text-no-task-container">
+            <p>No tasks</p>
+          </div>
+          <div className="wall-no-task"></div>
         </div>
-        <div className="wall-no-task"></div>
-      </div>
+      )}
 
       <div className="black-background"></div>
 

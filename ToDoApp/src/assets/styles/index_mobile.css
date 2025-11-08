@@ -1,4 +1,9 @@
 @media (max-width: 1600px) {
+  #root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   html,
   body {
     width: 100%;
@@ -30,9 +35,11 @@
   }
 
   .add-task-container {
-    width: 85%;
-    margin: 20px;
+    width: 90%;
     display: flex;
+    margin-left: 20px;
+    margin-top: 20px;
+    justify-content: space-between;
     height: 70px;
   }
 
@@ -59,13 +66,15 @@
     width: 72px;
     height: 70px;
     background: url("../icons/Property\ Default.png");
-    margin-left: 10px;
     background-repeat: no-repeat;
+    background-position:right
   }
 
   .add-task-button:hover {
     background: url("../icons/Property\ Hover.png");
     cursor: pointer;
+    background-repeat: no-repeat;
+    background-position:right
   }
 
   .no-task-container {
@@ -97,15 +106,16 @@
   }
 
   .tasks-container {
-    margin: 20px;
-    width: 85%;
+    margin-top: 20px;
+    width: 90%;
     height: auto;
     display: grid;
     row-gap: 10px;
+    margin-left: 20px;
   }
 
   .task-card {
-    width: 100%;
+    width: 100% - 2px;
     height: 72px;
     background-color: #242320;
     border: 2px solid;
