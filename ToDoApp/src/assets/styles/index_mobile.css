@@ -67,14 +67,14 @@
     height: 70px;
     background: url("../icons/Property\ Default.png");
     background-repeat: no-repeat;
-    background-position:right
+    background-position: right;
   }
 
   .add-task-button:hover {
     background: url("../icons/Property\ Hover.png");
     cursor: pointer;
     background-repeat: no-repeat;
-    background-position:right
+    background-position: right;
   }
 
   .no-task-container {
@@ -221,6 +221,11 @@
     align-items: center;
   }
 
+  .edit-task-container.visible {
+    visibility: visible;
+    height: 80%;
+  }
+
   .edit-task {
     width: 90%;
     height: 100%;
@@ -312,6 +317,11 @@
     transform: translate(-50%, -50%);
   }
 
+  .delete-task-container.visible {
+    visibility: visible;
+    height: 20%;
+  }
+
   .delete-task-horizontal-wall {
     width: 100%;
     height: 4px;
@@ -371,6 +381,11 @@
     display: flex;
     justify-content: center;
     align-items: end;
+  }
+
+  .share-menu-container.visible {
+    visibility: visible;
+    height: 76px;
   }
 
   .share-menu {

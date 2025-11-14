@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { saveTaskToLocalStorage } from "./LocalStorageUtils.js";
 
 function TaskAdder({ onAddTask }) {
