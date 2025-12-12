@@ -9,7 +9,12 @@ export const Task = ({ id, title, about, pinned }) => {
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const sortable = pinned ? null : useSortable({ id });
+  const sortable = pinned
+    ? null
+    : useSortable({
+        id,
+        activationConstraint: { distance: 5 },
+      });
   const attributes = sortable ? sortable.attributes : {};
   const listeners = sortable ? sortable.listeners : {};
   const setNodeRef = sortable ? sortable.setNodeRef : undefined;
@@ -18,7 +23,7 @@ export const Task = ({ id, title, about, pinned }) => {
     : {};
 
   const handleCardClick = () => {
-    setMenuOpen((prev) => (prev ? false : true));
+    setMenuOpen((prev) => !prev);
   };
 
   const handleDelete = (event) => {
