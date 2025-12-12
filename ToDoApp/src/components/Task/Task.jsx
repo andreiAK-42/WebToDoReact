@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import TaskEdit from "../TaskEdit.jsx";
-import TaskDelete from "../TaskDelete.jsx";
+import TaskEdit from "../TaskEdit/TaskEdit.jsx";
+import TaskDelete from "../TaskDelete/TaskDelete.jsx";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import "./Task.css";
 
 export const Task = ({ id, title, about }) => {
   const [selectedTaskId, setSelectedTaskId] = useState(false);

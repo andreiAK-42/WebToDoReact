@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./assets/styles/index_mobile.css";
-import TaskAdder from "./components/TaskAdder.jsx";
-import TaskShare from "./components/TaskShare.jsx";
+import TaskAdder from "./components/TaskAdder/TaskAdder.jsx";
+import TaskShare from "./components/TaskShare/TaskShare.jsx";
 import { loadTasksFromLocalStorage } from "./components/LocalStorageUtils.js";
 import { DndContext, closestCorners } from "@dnd-kit/core";
 import { Column } from "./components/Column/column.jsx";

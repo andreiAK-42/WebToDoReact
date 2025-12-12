@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { saveTaskToLocalStorage } from "./LocalStorageUtils.js";
+import { saveTaskToLocalStorage } from "../LocalStorageUtils.js";
+import "./TaskAdder.css";
 
 function TaskAdder({ onAddTask }) {
   const [inputTitle, setInputTitle] = useState("");
@@ -51,3 +52,4 @@ function TaskAdder({ onAddTask }) {
 }
 
 export default TaskAdder;
+

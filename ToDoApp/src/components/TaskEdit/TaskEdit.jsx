@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import {
   saveTaskToLocalStorage,
   deleteTaskFromLocalStorage,
-} from "./LocalStorageUtils.js";
+} from "../LocalStorageUtils.js";
+import "./TaskEdit.css";
 
 function TaskEdit({ taskId, onCancelEdit, setTasks, tasks }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -91,3 +92,4 @@ function TaskEdit({ taskId, onCancelEdit, setTasks, tasks }) {
 }
 
 export default TaskEdit;
+

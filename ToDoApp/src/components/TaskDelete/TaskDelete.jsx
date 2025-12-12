@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { deleteTaskFromLocalStorage } from "./LocalStorageUtils.js";
+import { deleteTaskFromLocalStorage } from "../LocalStorageUtils.js";
+import "./TaskDelete.css";
 
 function TaskDelete({ taskId, onCancelDelete, setTasks }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -50,3 +51,4 @@ function TaskDelete({ taskId, onCancelDelete, setTasks }) {
 }
 
 export default TaskDelete;
+
