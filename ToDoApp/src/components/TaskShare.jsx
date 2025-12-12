@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 
-function TaskShare({ taskId, onTaskShare }) {
+function TaskShare({ shareTask }) {
   const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(!!taskId);
-  }, [taskId]);
 
   const handleShare = (type) => {
     return () => {

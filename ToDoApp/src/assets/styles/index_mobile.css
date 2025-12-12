@@ -380,10 +380,10 @@
     height: 0;
     display: flex;
     justify-content: center;
-    align-items: end;
   }
 
   .share-menu-container.visible {
+    width: 100%;
     visibility: visible;
     height: 76px;
   }
