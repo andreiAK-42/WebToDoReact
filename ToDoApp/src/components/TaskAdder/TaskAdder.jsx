@@ -1,22 +1,25 @@
 import { useState } from "react";
-import { saveTaskToLocalStorage } from "../LocalStorageUtils.js";
+import { useDispatch } from "react-redux";
+import { addTask } from "../../app/tasksSlice";
 import "./TaskAdder.css";
 
-function TaskAdder({ onAddTask }) {
+function TaskAdder() {
   const [inputTitle, setInputTitle] = useState("");
   const [inputAbout, setInputAbout] = useState("");
+  const dispatch = useDispatch();
 
   const handleAddNewTaskClick = () => {
+    if (!inputTitle.trim() && !inputAbout.trim()) return;
     const taskId = Math.floor(Date.now() / 1000);
 
     const newTask = {
       id: taskId,
       taskTitle: inputTitle,
       taskAbout: inputAbout,
+      pinned: false,
     };
 
-    saveTaskToLocalStorage(inputTitle, inputAbout, taskId);
-    onAddTask(newTask);
+    dispatch(addTask(newTask));
     setInputTitle("");
     setInputAbout("");
   };

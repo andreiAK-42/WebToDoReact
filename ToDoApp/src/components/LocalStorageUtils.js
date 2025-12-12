@@ -1,47 +1,21 @@
-const saveTaskToLocalStorage = (taskTitle, taskAbout, id) => {
-  const localTasksString = window.localStorage.getItem("saveTaskList");
-  var localTasksArray = [];
+const STORAGE_KEY = "saveTaskList";
 
-  if (localTasksString) {
-    localTasksArray = JSON.parse(localTasksString);
-  } else {
-    localTasksArray = [];
+export const loadTasksFromLocalStorage = () => {
+  try {
+    const localTasksString = window.localStorage.getItem(STORAGE_KEY);
+    if (localTasksString) {
+      return JSON.parse(localTasksString);
+    }
+  } catch (error) {
+    console.error("Ошибка чтения localStorage", error);
   }
-
-  localTasksArray.push({ id: id, taskTitle: taskTitle, taskAbout: taskAbout });
-  window.localStorage.setItem("saveTaskList", JSON.stringify(localTasksArray));
+  return [];
 };
 
-const deleteTaskFromLocalStorage = (id) => {
-  const localTasksString = window.localStorage.getItem("saveTaskList");
-
-  if (localTasksString) {
-    const localTasksArray = JSON.parse(localTasksString);
-
-    localTasksArray.splice(
-      localTasksArray.findIndex((task) => task.id === id),
-      1
-    );
-    window.localStorage.setItem(
-      "saveTaskList",
-      JSON.stringify(localTasksArray)
-    );
+export const saveTasksToLocalStorage = (tasks) => {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  } catch (error) {
+    console.error("Ошибка записи localStorage", error);
   }
-};
-
-const loadTasksFromLocalStorage = () => {
-  const localTasksString = window.localStorage.getItem("saveTaskList");
-
-  if (localTasksString) {
-    return JSON.parse(localTasksString);
-  }
-  else {
-    return []
-  }
-}
-
-export {
-  saveTaskToLocalStorage,
-  deleteTaskFromLocalStorage,
-  loadTasksFromLocalStorage
 };

@@ -1,43 +1,36 @@
-import { useState, useEffect } from "react";
-import TaskEdit from "../TaskEdit/TaskEdit.jsx";
-import TaskDelete from "../TaskDelete/TaskDelete.jsx";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { removeTask, togglePin } from "../../app/tasksSlice";
 import "./Task.css";
 
-export const Task = ({ id, title, about }) => {
-  const [selectedTaskId, setSelectedTaskId] = useState(false);
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+export const Task = ({ id, title, about, pinned }) => {
+  const dispatch = useDispatch();
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleTaskClick = (event) => {
-    if (event.target.className == "task-card") {
-      if (selectedTaskId === true) {
-        setSelectedTaskId(false);
-      } else {
-        setSelectedTaskId(true);
-      }
-    }
+  const sortable = pinned ? null : useSortable({ id });
+  const attributes = sortable ? sortable.attributes : {};
+  const listeners = sortable ? sortable.listeners : {};
+  const setNodeRef = sortable ? sortable.setNodeRef : undefined;
+  const style = sortable
+    ? { transition: sortable.transition, transform: CSS.Transform.toString(sortable.transform) }
+    : {};
+
+  const handleCardClick = () => {
+    setMenuOpen((prev) => !prev);
   };
 
-  const handleDeleteClick = (event, taskId) => {
+  const handleDelete = (event) => {
     event.stopPropagation();
-    setTaskToDelete(taskId);
+    dispatch(removeTask(id));
+    setMenuOpen(false);
   };
 
-  const handleShareTask = (event, taskId) => {
-    if (taskToShare === taskId) {
-      setTaskToShare(null);
-    } else {
-      setTaskToShare(taskId);
-    }
+  const handlePin = (event) => {
+    event.stopPropagation();
+    dispatch(togglePin(id));
   };
-
-  const handleEditTask = (event, taskId) => {
-    setTaskToEdit(taskId);
-  };
-
-  const style = { transition, transform: CSS.Transform.toString(transform) };
 
   return (
     <>
@@ -46,35 +39,22 @@ export const Task = ({ id, title, about }) => {
         {...attributes}
         {...listeners}
         style={style}
-        className="task-card"
-        onClick={() => handleTaskClick(event)}
+        className={`task-card ${pinned ? "pinned" : ""}`}
+        onClick={handleCardClick}
       >
         <div className="text-task-card">
           <h1>{title}</h1>
           <p>{about}</p>
         </div>
-        <div
-          className="delete-button-task-card"
-          onClick={() => handleDeleteClick(event, id)}
-        ></div>
+        <div className="delete-button-task-card" onClick={handleDelete}></div>
       </div>
-      <div
-        className={`menu-task-container ${
-          selectedTaskId === id ? "visible" : ""
-        }`}
-      >
-        <div
-          className="share-task-button"
-          onClick={() => handleShareTask(event, id)}
-        ></div>
+      <div className={`menu-task-container ${menuOpen ? "visible" : ""}`}>
+        <div className="pin-task-button" onClick={handlePin}>
+          {pinned ? "Unpin" : "Pin"}
+        </div>
+        <div className="share-task-button"></div>
         <div className="about-task-button"></div>
-        <div
-          className="edit-task-button"
-          onClick={() => handleEditTask(event, id)}
-        ></div>
       </div>
-
-      <TaskDelete onCancelDelete={() => setTaskToDelete(null)} />
     </>
   );
 };

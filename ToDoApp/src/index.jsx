@@ -1,45 +1,40 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./assets/styles/index_mobile.css";
 import TaskAdder from "./components/TaskAdder/TaskAdder.jsx";
 import TaskShare from "./components/TaskShare/TaskShare.jsx";
-import { loadTasksFromLocalStorage } from "./components/LocalStorageUtils.js";
+import {
+  loadTasksFromLocalStorage,
+  saveTasksToLocalStorage,
+} from "./components/LocalStorageUtils.js";
 import { DndContext, closestCorners } from "@dnd-kit/core";
 import { Column } from "./components/Column/column.jsx";
-import { arrayMove } from "@dnd-kit/sortable";
+import { reorderTasks, setTasks } from "./app/tasksSlice";
 
 function Index() {
-  const [tasks, setTasks] = useState([]);
+  const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.tasks);
 
   useEffect(() => {
-    setTasks(loadTasksFromLocalStorage());
-  }, []);
+    dispatch(setTasks(loadTasksFromLocalStorage()));
+  }, [dispatch]);
 
-  const handleAddTask = (newTask) => {
-    const updatedTasks = [...tasks, newTask];
-    setTasks(updatedTasks);
+  useEffect(() => {
+    saveTasksToLocalStorage(tasks);
+  }, [tasks]);
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    dispatch(reorderTasks({ activeId: active.id, overId: over.id }));
   };
-
-  const getTaskPos = id => tasks.findIndex(task => task.id == id)
-
-  const handleDragEnd = event => {
-    const { active, over } = event
-
-    if (active.id === over.id) return;
-
-    setTasks(tasks => {
-      const originalPos = getTaskPos(active.id);
-      const newPos = getTaskPos(over.id);
-
-      return arrayMove(tasks, originalPos, newPos);
-    })
-  }
 
   return (
     <>
-      <TaskAdder onAddTask={handleAddTask} />
+      <TaskAdder />
 
       <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
-        <Column tasks={tasks} setTasks={setTasks} />
+        <Column tasks={tasks} />
       </DndContext>
 
       {tasks.length === 0 && (

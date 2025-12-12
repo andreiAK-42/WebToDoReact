@@ -11,6 +11,10 @@
   cursor: pointer;
 }
 
+.task-card.pinned {
+  border-color: #ffb347;
+}
+
 .delete-button-task-card {
   width: 32px;
   height: 32px;
@@ -48,6 +52,22 @@
 .menu-task-container.visible {
   visibility: visible;
   height: 36px;
+}
+
+.pin-task-button {
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 6px 10px;
+  background-color: #242320;
+  border: 1px solid #a35709;
+  border-radius: 6px;
+  color: #f0e3ca;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.pin-task-button:hover {
+  border-color: #ff8303;
 }
 
 .share-task-button {
