@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import {
-  saveTaskToLocalStorage,
-  deleteTaskFromLocalStorage,
-} from "../LocalStorageUtils.js";
+import { useSelector, useDispatch } from "react-redux";
+import { replaceTask } from "../../app/tasksSlice";
 import "./TaskEdit.css";
 
-function TaskEdit({ taskId, onCancelEdit, setTasks, tasks }) {
+function TaskEdit({ taskId, onCancelEdit }) {
+  const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.tasks);
   const [isVisible, setIsVisible] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedAbout, setEditedAbout] = useState("");
@@ -24,23 +24,15 @@ function TaskEdit({ taskId, onCancelEdit, setTasks, tasks }) {
   const handleConfirmEdit = () => {
     if (!taskId) return;
 
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              taskTitle: editedTitle,
-              taskAbout: editedAbout,
-            }
-          : task
-      )
+    dispatch(
+      replaceTask({
+        id: taskId,
+        changes: { taskTitle: editedTitle, taskAbout: editedAbout },
+      })
     );
 
-    deleteTaskFromLocalStorage(taskId);
-    saveTaskToLocalStorage(editedTitle, editedAbout, taskId);
-
     setIsVisible(false);
-    onCancelEdit();
+    onCancelEdit?.();
 
     setEditedTitle("");
     setEditedAbout("");
@@ -48,7 +40,7 @@ function TaskEdit({ taskId, onCancelEdit, setTasks, tasks }) {
 
   const handleCancelEdit = () => {
     setIsVisible(false);
-    onCancelEdit();
+    onCancelEdit?.();
     setEditedTitle("");
     setEditedAbout("");
   };

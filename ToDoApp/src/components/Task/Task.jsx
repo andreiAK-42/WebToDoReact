@@ -4,11 +4,16 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { removeTask, togglePin } from "../../app/tasksSlice";
 import "./Task.css";
+import TaskEdit from "../TaskEdit/TaskEdit.jsx";
+import TaskShare from "../TaskShare/TaskShare.jsx";
 
 export const Task = ({ id, title, about, pinned }) => {
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
   const clickStartRef = useRef({ x: 0, y: 0 });
+  const [shareOpen, setShareOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   const sortable = pinned
     ? null
@@ -47,6 +52,21 @@ export const Task = ({ id, title, about, pinned }) => {
     dispatch(togglePin(id));
   };
 
+  const handleShare = (event) => {
+    event.stopPropagation();
+    setShareOpen(true);
+  };
+
+  const handleAbout = (event) => {
+    event.stopPropagation();
+    setAboutOpen((prev) => !prev);
+  };
+
+  const handleEdit = (event) => {
+    event.stopPropagation();
+    setEditOpen(true);
+  };
+
   return (
     <>
       <div
@@ -65,12 +85,26 @@ export const Task = ({ id, title, about, pinned }) => {
         <div className="delete-button-task-card" onClick={handleDelete}></div>
       </div>
       <div className={`menu-task-container ${menuOpen ? "visible" : ""}`}>
+        <div className="share-task-button" onClick={handleShare}></div>
+        <div className="about-task-button" onClick={handleAbout}></div>
+        <div className="edit-task-button" onClick={handleEdit}></div>
         <div className="pin-task-button" onClick={handlePin}>
           {pinned ? "Unpin" : "Pin"}
         </div>
-        <div className="share-task-button"></div>
-        <div className="about-task-button"></div>
       </div>
+      {aboutOpen && (
+        <div className="about-task-panel">
+          <h2>{title}</h2>
+          <p>{about}</p>
+        </div>
+      )}
+      <TaskShare
+        visible={shareOpen}
+        onClose={() => setShareOpen(false)}
+        taskTitle={title}
+        taskAbout={about}
+      />
+      <TaskEdit taskId={editOpen ? id : null} onCancelEdit={() => setEditOpen(false)} />
     </>
   );
 };

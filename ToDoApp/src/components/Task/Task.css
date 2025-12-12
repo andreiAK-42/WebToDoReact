@@ -54,6 +54,15 @@
   height: 36px;
 }
 
+.about-task-panel {
+  margin-top: 8px;
+  padding: 10px;
+  background-color: #242320;
+  border: 1px solid #a35709;
+  border-radius: 6px;
+  color: #f0e3ca;
+}
+
 .pin-task-button {
   margin-left: 10px;
   margin-right: 10px;

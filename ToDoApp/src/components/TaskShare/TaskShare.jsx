@@ -1,41 +1,44 @@
-import { useState, useEffect } from "react";
 import "./TaskShare.css";
 
-function TaskShare({ shareTask }) {
-  const [isVisible, setIsVisible] = useState(false);
+function TaskShare({ visible, onClose, taskTitle, taskAbout }) {
+  const textToCopy = `${taskTitle || ""}\n${taskAbout || ""}`.trim();
 
-  const handleShare = (type) => {
-    return () => {
-      console.log(`Поделились таской с id ${taskId} через ${type}`);
-      setIsVisible(false);
-      onTaskShare();
-    };
+  const handleShare = (type) => async () => {
+    if (type === "copy" && navigator?.clipboard) {
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+      } catch (e) {
+        console.error("Не удалось скопировать текст", e);
+      }
+    }
+    onClose?.();
   };
 
   return (
     <>
       <div
-        className={`share-menu-container ${isVisible ? "visible" : "hidden"}`}
+        className={`share-menu-container ${visible ? "visible" : "hidden"}`}
+        onClick={onClose}
       >
-        <div className="share-menu">
+        <div className="share-menu" onClick={(e) => e.stopPropagation()}>
           <div
             id="copy"
             className="round-share-button"
-            onClick={handleShare("копирование")}
+            onClick={handleShare("copy")}
           >
             <img src="../../assets/icons/Content copy.png" />
           </div>
           <div
             id="vk"
             className="round-share-button"
-            onClick={handleShare("вконтакте")}
+            onClick={handleShare("vk")}
           >
             <img src="../../assets/icons/vk-svgrepo-com 1.png" />
           </div>
           <div
             id="telegram"
             className="round-share-button"
-            onClick={handleShare("телеграм")}
+            onClick={handleShare("telegram")}
           >
             <img src="../../assets/icons/telegram-svgrepo-com 1.png" />
           </div>
