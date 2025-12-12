@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./assets/styles/index_mobile.css";
 import TaskAdder from "./components/TaskAdder/TaskAdder.jsx";
@@ -14,12 +14,19 @@ import { reorderTasks, setTasks } from "./app/tasksSlice";
 function Index() {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks);
+  const hydrated = useRef(false);
 
   useEffect(() => {
-    dispatch(setTasks(loadTasksFromLocalStorage()));
+    const stored = loadTasksFromLocalStorage().map((task) => ({
+      ...task,
+      pinned: !!task.pinned,
+    }));
+    dispatch(setTasks(stored));
+    hydrated.current = true;
   }, [dispatch]);
 
   useEffect(() => {
+    if (!hydrated.current) return;
     saveTasksToLocalStorage(tasks);
   }, [tasks]);
 

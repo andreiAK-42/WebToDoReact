@@ -18,7 +18,7 @@ export const Task = ({ id, title, about, pinned }) => {
     : {};
 
   const handleCardClick = () => {
-    setMenuOpen((prev) => !prev);
+    setMenuOpen((prev) => (prev ? false : true));
   };
 
   const handleDelete = (event) => {
