@@ -17,8 +17,13 @@ function Index() {
   }, [tasks]);
 
   const handleDragEnd = (event) => {
-    const { active, over } = event;
+    const { active, over, delta } = event;
+    // Если не было реального перемещения (просто клик), не обрабатываем
     if (!over || active.id === over.id) return;
+    // Проверяем, был ли реальный drag - если delta очень маленькая, это был клик
+    if (delta && Math.abs(delta.x) < 8 && Math.abs(delta.y) < 8) {
+      return;
+    }
     dispatch(reorderTasks({ activeId: active.id, overId: over.id }));
   };
 

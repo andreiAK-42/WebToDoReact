@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -8,22 +8,32 @@ import "./Task.css";
 export const Task = ({ id, title, about, pinned }) => {
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
+  const clickStartRef = useRef({ x: 0, y: 0 });
 
   const sortable = pinned
     ? null
     : useSortable({
         id,
-        activationConstraint: { distance: 5 },
+        activationConstraint: { distance: 8 },
       });
   const attributes = sortable ? sortable.attributes : {};
-  const listeners = sortable ? sortable.listeners : {};
+  const listeners = pinned ? {} : (sortable?.listeners || {});
   const setNodeRef = sortable ? sortable.setNodeRef : undefined;
   const style = sortable
     ? { transition: sortable.transition, transform: CSS.Transform.toString(sortable.transform) }
     : {};
 
-  const handleCardClick = () => {
-    setMenuOpen((prev) => !prev);
+  const handleMouseDown = (e) => {
+    clickStartRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleMouseUp = (e) => {
+    const deltaX = Math.abs(e.clientX - clickStartRef.current.x);
+    const deltaY = Math.abs(e.clientY - clickStartRef.current.y);
+    
+    if (deltaX < 8 && deltaY < 8) {
+      setMenuOpen((prev) => !prev);
+    }
   };
 
   const handleDelete = (event) => {
@@ -45,7 +55,8 @@ export const Task = ({ id, title, about, pinned }) => {
         {...listeners}
         style={style}
         className={`task-card ${pinned ? "pinned" : ""}`}
-        onClick={handleCardClick}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
       >
         <div className="text-task-card">
           <h1>{title}</h1>
