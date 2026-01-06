@@ -19,6 +19,7 @@ function TaskShare({ visible, onClose, taskTitle, taskAbout }: TaskShareProps) {
   const textToCopy = `${taskTitle || ""}\n${taskAbout || ""}`.trim();
 
   const handleShare = (type: ShareType) => async () => {
+    console.log("Выбран способ поделиться: " + type.toString());
     if (type === "copy" && navigator?.clipboard) {
       try {
         await navigator.clipboard.writeText(textToCopy);
