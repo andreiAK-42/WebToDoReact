@@ -1,8 +1,13 @@
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { Task } from "../Task/Task";
 import "./Column.css";
+import type { Task as TaskType } from "../../types/task";
 
-export const Column = ({ tasks }) => {
+interface ColumnProps {
+  tasks: TaskType[];
+}
+
+export const Column = ({ tasks }: ColumnProps) => {
   const pinnedTasks = tasks.filter((task) => task.pinned);
   const regularTasks = tasks.filter((task) => !task.pinned);
 

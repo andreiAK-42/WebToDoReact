@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { addTask } from "../../app/tasksSlice";
 import "./TaskAdder.css";
+import type { Task } from "../../types/task";
+import type { AppDispatch } from "../../app/store";
 
 function TaskAdder() {
   const [inputTitle, setInputTitle] = useState("");
   const [inputAbout, setInputAbout] = useState("");
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleAddNewTaskClick = () => {
     if (!inputTitle.trim() && !inputAbout.trim()) return;
     const taskId = Math.floor(Date.now() / 1000);
 
-    const newTask = {
+    const newTask: Task = {
       id: taskId,
       taskTitle: inputTitle,
       taskAbout: inputAbout,
@@ -24,11 +26,11 @@ function TaskAdder() {
     setInputAbout("");
   };
 
-  const handleSetTitle = (event) => {
+  const handleSetTitle = (event: ChangeEvent<HTMLInputElement>) => {
     setInputTitle(event.target.value);
   };
 
-  const handleSetAbout = (event) => {
+  const handleSetAbout = (event: ChangeEvent<HTMLInputElement>) => {
     setInputAbout(event.target.value);
   };
 
@@ -55,4 +57,3 @@ function TaskAdder() {
 }
 
 export default TaskAdder;
-
