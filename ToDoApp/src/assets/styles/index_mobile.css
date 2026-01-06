@@ -1,11 +1,7 @@
 @media (max-width: 1600px) {
-  #root {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+
   html,
-  body {
+  body, #root {
     width: 100%;
     height: 100%;
     background-color: #1b1a17;

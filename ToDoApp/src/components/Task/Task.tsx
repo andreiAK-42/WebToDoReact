@@ -1,16 +1,24 @@
-import { useState, useRef } from "react";
+import { useState, useRef, MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { removeTask, togglePin } from "../../app/tasksSlice";
 import "./Task.css";
-import TaskEdit from "../TaskEdit/TaskEdit.jsx";
-import TaskShare from "../TaskShare/TaskShare.jsx";
+import TaskEdit from "../TaskEdit/TaskEdit";
+import TaskShare from "../TaskShare/TaskShare";
+import type { AppDispatch } from "../../app/store";
 
-export const Task = ({ id, title, about, pinned }) => {
-  const dispatch = useDispatch();
+interface TaskProps {
+  id: number;
+  title: string;
+  about: string;
+  pinned: boolean;
+}
+
+export const Task = ({ id, title, about, pinned }: TaskProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [menuOpen, setMenuOpen] = useState(false);
-  const clickStartRef = useRef({ x: 0, y: 0 });
+  const clickStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const [shareOpen, setShareOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -28,11 +36,11 @@ export const Task = ({ id, title, about, pinned }) => {
     ? { transition: sortable.transition, transform: CSS.Transform.toString(sortable.transform) }
     : {};
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: MouseEvent) => {
     clickStartRef.current = { x: e.clientX, y: e.clientY };
   };
 
-  const handleMouseUp = (e) => {
+  const handleMouseUp = (e: MouseEvent) => {
     const deltaX = Math.abs(e.clientX - clickStartRef.current.x);
     const deltaY = Math.abs(e.clientY - clickStartRef.current.y);
     
@@ -41,28 +49,28 @@ export const Task = ({ id, title, about, pinned }) => {
     }
   };
 
-  const handleDelete = (event) => {
+  const handleDelete = (event: MouseEvent) => {
     event.stopPropagation();
     dispatch(removeTask(id));
     setMenuOpen(false);
   };
 
-  const handlePin = (event) => {
+  const handlePin = (event: MouseEvent) => {
     event.stopPropagation();
     dispatch(togglePin(id));
   };
 
-  const handleShare = (event) => {
+  const handleShare = (event: MouseEvent) => {
     event.stopPropagation();
     setShareOpen(true);
   };
 
-  const handleAbout = (event) => {
+  const handleAbout = (event: MouseEvent) => {
     event.stopPropagation();
     setAboutOpen((prev) => !prev);
   };
 
-  const handleEdit = (event) => {
+  const handleEdit = (event: MouseEvent) => {
     event.stopPropagation();
     setEditOpen(true);
   };

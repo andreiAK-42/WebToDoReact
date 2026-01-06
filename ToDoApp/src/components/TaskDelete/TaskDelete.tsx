@@ -1,8 +1,14 @@
 import { useState, useEffect } from "react";
-import { deleteTaskFromLocalStorage } from "../LocalStorageUtils.js";
 import "./TaskDelete.css";
+import type { Task } from "../../types/task";
 
-function TaskDelete({ taskId, onCancelDelete, setTasks }) {
+interface TaskDeleteProps {
+  taskId: number | null;
+  onCancelDelete: () => void;
+  setTasks: (callback: (prevTasks: Task[]) => Task[]) => void;
+}
+
+function TaskDelete({ taskId, onCancelDelete, setTasks }: TaskDeleteProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -10,11 +16,11 @@ function TaskDelete({ taskId, onCancelDelete, setTasks }) {
   }, [taskId]);
 
   const handleConfirmDelete = () => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-    onCancelDelete();
-    setIsVisible(false);
-
-    deleteTaskFromLocalStorage(taskId);
+    if (taskId) {
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+      onCancelDelete();
+      setIsVisible(false);
+    }
   };
 
   const handleCancelDelete = () => {
@@ -51,4 +57,3 @@ function TaskDelete({ taskId, onCancelDelete, setTasks }) {
 }
 
 export default TaskDelete;
-

@@ -1,11 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { replaceTask } from "../../app/tasksSlice";
 import "./TaskEdit.css";
+import type { RootState, AppDispatch } from "../../app/store";
 
-function TaskEdit({ taskId, onCancelEdit }) {
-  const dispatch = useDispatch();
-  const tasks = useSelector((state) => state.tasks);
+interface TaskEditProps {
+  taskId: number | null;
+  onCancelEdit: () => void;
+}
+
+function TaskEdit({ taskId, onCancelEdit }: TaskEditProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const tasks = useSelector((state: RootState) => state.tasks);
   const [isVisible, setIsVisible] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedAbout, setEditedAbout] = useState("");
@@ -56,13 +62,13 @@ function TaskEdit({ taskId, onCancelEdit }) {
               id="inputEditTaskTitle"
               placeholder="Mini Input..."
               value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setEditedTitle(e.target.value)}
             />
             <input
               id="inputEditTaskAbout"
               placeholder="Max Input..."
               value={editedAbout}
-              onChange={(e) => setEditedAbout(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setEditedAbout(e.target.value)}
             />
           </div>
 
@@ -84,4 +90,3 @@ function TaskEdit({ taskId, onCancelEdit }) {
 }
 
 export default TaskEdit;
-
