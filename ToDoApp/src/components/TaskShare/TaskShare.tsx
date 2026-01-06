@@ -1,5 +1,10 @@
 import { MouseEvent } from "react";
 import "./TaskShare.css";
+import copyIcon from "../../assets/icons/Content copy.png";
+import vkIcon from "../../assets/icons/vk-svgrepo-com 1.png";
+import telegramIcon from "../../assets/icons/telegram-svgrepo-com 1.png";
+import whatsappIcon from "../../assets/icons/whatsapp-svgrepo-com (1) 1.png";
+import facebookIcon from "../../assets/icons/facebook-alt-svgrepo-com 1.png";
 
 interface TaskShareProps {
   visible: boolean;
@@ -36,35 +41,35 @@ function TaskShare({ visible, onClose, taskTitle, taskAbout }: TaskShareProps) {
             className="round-share-button"
             onClick={handleShare("copy")}
           >
-            <img src="../../assets/icons/Content copy.png" alt="Copy" />
+            <img src={copyIcon} alt="Copy" />
           </div>
           <div
             id="vk"
             className="round-share-button"
             onClick={handleShare("vk")}
           >
-            <img src="../../assets/icons/vk-svgrepo-com 1.png" alt="VK" />
+            <img src={vkIcon} alt="VK" />
           </div>
           <div
             id="telegram"
             className="round-share-button"
             onClick={handleShare("telegram")}
           >
-            <img src="../../assets/icons/telegram-svgrepo-com 1.png" alt="Telegram" />
+            <img src={telegramIcon} alt="Telegram" />
           </div>
           <div
             id="whatsapp"
             className="round-share-button"
             onClick={handleShare("whatsapp")}
           >
-            <img src="../../assets/icons/whatsapp-svgrepo-com (1) 1.png" alt="WhatsApp" />
+            <img src={whatsappIcon} alt="WhatsApp" />
           </div>
           <div
             id="facebook"
             className="round-share-button"
             onClick={handleShare("facebook")}
           >
-            <img src="../../assets/icons/facebook-alt-svgrepo-com 1.png" alt="Facebook" />
+            <img src={facebookIcon} alt="Facebook" />
           </div>
         </div>
       </div>
